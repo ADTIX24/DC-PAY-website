@@ -651,7 +651,8 @@
                         <p id="modal-address-subtitle" class="text-xs text-gray-500 mt-1"></p>
                     </div>
                     <form id="payment-form" class="space-y-4">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Amount fields for Receive (Syriatel/Shamcash) -->
+                        <div id="modal-receive-amounts" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-300 mb-2">المبلغ المحول بالدولار</label>
                                 <input id="modal-usd-amount" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" placeholder="10.00" class="w-full bg-[#0d1a2e] border border-[#2a3f6c] rounded-lg p-3 text-white focus:outline-none focus:border-sky-500 modal-input" required>
@@ -661,6 +662,25 @@
                                 <input id="modal-syp-amount" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" placeholder="113000" class="w-full bg-[#0d1a2e] border border-[#2a3f6c] rounded-lg p-3 text-white focus:outline-none focus:border-sky-500 modal-input" required>
                             </div>
                         </div>
+
+                        <!-- Amount fields for JOD Deposit (Orange Money) -->
+                        <div id="modal-jod-deposit-amounts" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">المبلغ المحول بالدينار الأردني</label>
+                                <input id="modal-jod-input" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" placeholder="10.00" class="w-full bg-[#0d1a2e] border border-[#2a3f6c] rounded-lg p-3 text-white focus:outline-none focus:border-sky-500 modal-input" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-green-400 mb-2">صافي المبلغ بالدولار</label>
+                                <input id="modal-jod-to-usd-output" type="text" placeholder="0.00" class="w-full bg-[#0d1a2e] border border-[#2a3f6c] rounded-lg p-3 text-white focus:outline-none" readonly>
+                            </div>
+                        </div>
+                        
+                        <!-- Amount field for USDT Deposit -->
+                         <div id="modal-usdt-deposit-amount" class="hidden">
+                            <label class="block text-sm font-medium text-gray-300 mb-2">المبلغ المحول بـ USDT</label>
+                            <input id="modal-usdt-input" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" placeholder="10.00" class="w-full bg-[#0d1a2e] border border-[#2a3f6c] rounded-lg p-3 text-white focus:outline-none focus:border-sky-500 modal-input" required>
+                        </div>
+                        
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                              <div>
                                 <label class="block text-sm font-medium text-gray-300 mb-2">الاسم الكامل</label>
@@ -672,9 +692,15 @@
                             </div>
                         </div>
 
-                        <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-2">إيصال الدفع (إجباري)</label>
-                            <input id="modal-receipt-file" type="file" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-sky-500/10 file:text-sky-300 hover:file:bg-sky-500/20 modal-input" required>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                             <div id="modal-qr-field" class="hidden md:col-span-1">
+                                <label class="block text-sm font-medium text-gray-300 mb-2">صورة QR (إجباري)</label>
+                                <input id="modal-qr-file" type="file" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-sky-500/10 file:text-sky-300 hover:file:bg-sky-500/20 modal-input">
+                            </div>
+                             <div id="modal-receipt-field" class="md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-300 mb-2">إيصال الدفع (إجباري)</label>
+                                <input id="modal-receipt-file" type="file" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-sky-500/10 file:text-sky-300 hover:file:bg-sky-500/20 modal-input" required>
+                            </div>
                         </div>
                         
                         <div>
@@ -841,12 +867,29 @@
             const closeModalBtn = document.getElementById('close-modal-btn');
             const modalOverlay = document.getElementById('modal-overlay');
             const modalTitle = document.getElementById('modal-title');
+            
+            const modalDepositInfo = document.getElementById('modal-deposit-info');
             const modalAddressLabel = document.getElementById('modal-address-label');
             const modalAddressValue = document.getElementById('modal-address-value');
             const modalAddressSubtitle = document.getElementById('modal-address-subtitle');
             const copyAddressBtn = document.getElementById('copy-address-btn');
+            
+            const modalReceiveAmounts = document.getElementById('modal-receive-amounts');
             const modalUsdAmountInput = document.getElementById('modal-usd-amount');
             const modalSypAmountInput = document.getElementById('modal-syp-amount');
+            
+            const modalJodDepositAmounts = document.getElementById('modal-jod-deposit-amounts');
+            const modalJodInput = document.getElementById('modal-jod-input');
+            const modalJodToUsdOutput = document.getElementById('modal-jod-to-usd-output');
+
+            const modalUsdtDepositAmount = document.getElementById('modal-usdt-deposit-amount');
+            const modalUsdtInput = document.getElementById('modal-usdt-input');
+            
+            const modalQrField = document.getElementById('modal-qr-field');
+            const modalReceiptField = document.getElementById('modal-receipt-field');
+            const modalQrFileInput = document.getElementById('modal-qr-file');
+
+
             const modalContent = document.getElementById('modal-content');
             const modalBody = document.getElementById('modal-body');
             const modalFormContainer = document.getElementById('modal-form-container');
@@ -857,22 +900,63 @@
 
             const openModal = (config) => {
                 modalTitle.textContent = config.title;
-                modalAddressLabel.textContent = config.addressLabel;
-                modalAddressValue.textContent = config.addressValue;
 
-                if (config.addressSubtitle) {
-                    modalAddressSubtitle.textContent = config.addressSubtitle;
-                    modalAddressSubtitle.classList.remove('hidden');
-                } else {
-                    modalAddressSubtitle.classList.add('hidden');
+                // Hide all amount sections and deposit info first
+                modalReceiveAmounts.classList.add('hidden');
+                modalJodDepositAmounts.classList.add('hidden');
+                modalUsdtDepositAmount.classList.add('hidden');
+                modalDepositInfo.classList.add('hidden');
+                modalQrField.classList.add('hidden');
+                modalQrFileInput.required = false;
+                modalReceiptField.classList.remove('md:col-span-1');
+                modalReceiptField.classList.add('md:col-span-2');
+
+
+                if (config.addressValue) {
+                     modalDepositInfo.classList.remove('hidden');
+                     modalAddressLabel.textContent = config.addressLabel;
+                     modalAddressValue.textContent = config.addressValue;
+                     if (config.addressSubtitle) {
+                        modalAddressSubtitle.textContent = config.addressSubtitle;
+                        modalAddressSubtitle.classList.remove('hidden');
+                    } else {
+                        modalAddressSubtitle.classList.add('hidden');
+                    }
                 }
-                
-                const netUsd = parseFloat(netUsdDisplay.textContent.replace('$', '')) || 0;
-                const netSyp = parseFloat(netSypDisplay.textContent.replace(/[^\d.-]/g, '')) || 0;
-                
-                modalUsdAmountInput.value = netUsd.toFixed(2);
-                modalSypAmountInput.value = Math.round(netSyp);
 
+                if (config.type === 'receive') {
+                    modalReceiveAmounts.classList.remove('hidden');
+                    modalQrField.classList.remove('hidden');
+                    modalQrFileInput.required = true;
+                    modalReceiptField.classList.add('md:col-span-1');
+                    modalReceiptField.classList.remove('md:col-span-2');
+
+                    const inputAmount = parseFloat(inputAmountInput.value) || 0;
+                    const inputCurrency = inputCurrencySelect.value;
+                    const usdToJodRate = 0.72;
+                    const usdToSarRate = 3.95;
+
+                    let usdAmount = 0;
+                    if (inputCurrency === 'USD') {
+                        usdAmount = inputAmount;
+                    } else if (inputCurrency === 'JOD') {
+                        usdAmount = inputAmount / usdToJodRate;
+                    } else if (inputCurrency === 'SAR') {
+                        usdAmount = inputAmount / usdToSarRate;
+                    }
+
+                    const netSyp = parseFloat(netSypDisplay.textContent.replace(/[^\d.-]/g, '')) || 0;
+                    
+                    modalUsdAmountInput.value = usdAmount.toFixed(2);
+                    modalSypAmountInput.value = Math.round(netSyp);
+                } else if (config.type === 'deposit-jod') {
+                    modalJodDepositAmounts.classList.remove('hidden');
+                    modalJodInput.value = '';
+                    modalJodToUsdOutput.value = '';
+                } else if (config.type === 'deposit-usdt') {
+                    modalUsdtDepositAmount.classList.remove('hidden');
+                    modalUsdtInput.value = '';
+                }
 
                 paymentModal.classList.remove('hidden');
                 paymentModal.classList.remove('pointer-events-none');
@@ -901,10 +985,12 @@
             const validateModalForm = () => {
                 let isValid = true;
                 modalFormInputs.forEach(input => {
-                    if (input.type === 'file') {
-                        if (input.files.length === 0) isValid = false;
-                    } else {
-                        if (input.value.trim() === '') isValid = false;
+                    if(!input.closest('div.hidden') && !input.parentElement.closest('.hidden')) { // Only validate visible inputs
+                        if (input.type === 'file') {
+                            if (input.files.length === 0 && input.required) isValid = false;
+                        } else {
+                            if (input.value.trim() === '' && input.required) isValid = false;
+                        }
                     }
                 });
                 modalSubmitBtn.disabled = !isValid;
@@ -918,32 +1004,38 @@
             if (modalSubmitBtn) {
                  modalSubmitBtn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    if(!paymentForm.checkValidity()){
+                    let isFormValid = true;
+                    modalFormInputs.forEach(input => {
+                         if(!input.closest('div.hidden') && !input.parentElement.closest('.hidden') && !input.checkValidity()){
+                             isFormValid = false;
+                         }
+                    });
+
+                    if(isFormValid){
+                        modalFormContainer.style.display = 'none';
+                        modalSuccessMessage.classList.remove('hidden');
+                        document.querySelector('#payment-modal .p-4.md\\:p-6.border-t').style.display = 'none'; // Hide footer
+                        setTimeout(closeModal, 5000);
+                    } else {
                         paymentForm.reportValidity();
-                        return;
                     }
-                    modalFormContainer.style.display = 'none';
-                    modalSuccessMessage.classList.remove('hidden');
-                    document.querySelector('#payment-modal .p-4.md\\:p-6.border-t').style.display = 'none'; // Hide footer
-                    setTimeout(closeModal, 5000);
                 });
             }
 
 
             if (syriatelBtn && shamcashBtn) {
                 syriatelBtn.addEventListener('click', () => openModal({
+                    type: 'receive',
                     title: 'استلام Syriatel Cash — بعد الدفع عبر (تحويل يدوي)',
-                    addressLabel: 'يرجى إرسال المبلغ إلى الإيميل التالي:',
-                    addressValue: 'syriatel.cash@email.com'
                 }));
                 shamcashBtn.addEventListener('click', () => openModal({
+                    type: 'receive',
                     title: 'استلام ShamCash — بعد الدفع عبر (تحويل يدوي)',
-                    addressLabel: 'يرجى إرسال المبلغ إلى الإيميل التالي:',
-                    addressValue: 'sham.cash@email.com'
                 }));
             }
              if (usdtDepositBtn) {
                 usdtDepositBtn.addEventListener('click', () => openModal({
+                    type: 'deposit-usdt',
                     title: 'إيداع عبر USDT TRC20',
                     addressLabel: 'عنوان USDT TRC',
                     addressValue: 'TTTZeTHUoccHiLpEnba8sUqT8EL6p1SAbZ'
@@ -951,6 +1043,7 @@
             }
             if (orangeMoneyBtn) {
                 orangeMoneyBtn.addEventListener('click', () => openModal({
+                    type: 'deposit-jod',
                     title: 'إيداع عبر Orange Money JO',
                     addressLabel: 'التحويل لرقم:',
                     addressValue: '0779769501',
@@ -960,15 +1053,30 @@
             
             if(modalUsdAmountInput && modalSypAmountInput) {
                 modalUsdAmountInput.addEventListener('input', () => {
+                    if (modalReceiveAmounts.classList.contains('hidden')) return;
                     const sypExchangeRate = parseFloat(exchangeRateInput.value) || 11300;
                     const usdValue = parseFloat(modalUsdAmountInput.value) || 0;
                     modalSypAmountInput.value = Math.round(usdValue * sypExchangeRate);
                 });
 
                 modalSypAmountInput.addEventListener('input', () => {
+                    if (modalReceiveAmounts.classList.contains('hidden')) return;
                     const sypExchangeRate = parseFloat(exchangeRateInput.value) || 11300;
                     const sypValue = parseFloat(modalSypAmountInput.value) || 0;
                     modalUsdAmountInput.value = (sypValue / sypExchangeRate).toFixed(2);
+                });
+            }
+            
+            if(modalJodInput) {
+                modalJodInput.addEventListener('input', () => {
+                    const jodValue = parseFloat(modalJodInput.value) || 0;
+                    const usdToJodRate = 0.72;
+                    const feePercentage = 0.05;
+
+                    const usdEquivalent = jodValue / usdToJodRate;
+                    const netUsd = usdEquivalent * (1 - feePercentage);
+
+                    modalJodToUsdOutput.value = netUsd.toFixed(2);
                 });
             }
 
