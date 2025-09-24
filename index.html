@@ -25,8 +25,11 @@
 <body class="bg-gray-900 text-white">
 
     <div class="relative min-h-screen md:flex">
-        <!-- Mobile Menu Button -->
-        <div class="md:hidden flex justify-between items-center bg-[#0d1a2e] p-4 fixed top-0 right-0 left-0 z-50">
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu-overlay" class="md:hidden fixed inset-0 bg-black/50 z-30 hidden"></div>
+        
+        <!-- Mobile Menu Button (This is the header on mobile) -->
+        <div class="md:hidden flex justify-between items-center bg-[#0d1a2e] p-4 fixed top-0 right-0 left-0 z-20">
             <div class="flex items-center space-x-2">
                 <svg class="h-8 w-8 text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
@@ -39,7 +42,7 @@
         </div>
 
         <!-- Sidebar -->
-        <aside id="sidebar" class="w-64 bg-[#0d1a2e] p-6 flex flex-col justify-between fixed inset-y-0 right-0 transform translate-x-full md:relative md:translate-x-0 transition-transform duration-300 ease-in-out z-40 md:z-auto">
+        <aside id="sidebar" class="w-64 bg-[#0d1a2e] p-6 flex flex-col justify-between fixed inset-y-0 right-0 transform translate-x-full md:relative md:translate-x-0 transition-transform duration-300 ease-in-out z-40">
             <div>
                 <div class="hidden md:flex items-center space-x-2 mb-10">
                     <svg class="h-8 w-8 text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -167,7 +170,7 @@
                             <input type="number" step="any" id="syr-rate" class="w-full bg-[#0d1a2e] border border-[#2a3f6c] rounded-lg p-3 text-white focus:outline-none focus:border-sky-500">
                         </div>
                         <div>
-                            <label for="jod-rate" class="block mb-2 text-lg font-medium text-gray-300">سعر الصرف للدولار مقابل الدينار (1$ = ? د.أ)</label>
+                            <label for="jod-rate" class="block mb-2 text-lg font-medium text-gray-300">سعر الصرف للدولار مقابل الدينار (1$ = ? d.أ)</label>
                             <input type="number" step="any" id="jod-rate" class="w-full bg-[#0d1a2e] border border-[#2a3f6c] rounded-lg p-3 text-white focus:outline-none focus:border-sky-500">
                         </div>
                          <div>
@@ -275,13 +278,20 @@
             
             const sidebar = document.getElementById('sidebar');
             const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
             const sidebarLinks = document.querySelectorAll('.sidebar-link');
             const sections = document.querySelectorAll('.section');
+
+            const toggleMenu = () => {
+                sidebar.classList.toggle('translate-x-full');
+                mobileMenuOverlay.classList.toggle('hidden');
+            };
             
             if (mobileMenuBtn) {
-                mobileMenuBtn.addEventListener('click', () => {
-                    sidebar.classList.toggle('translate-x-full');
-                });
+                mobileMenuBtn.addEventListener('click', toggleMenu);
+            }
+            if(mobileMenuOverlay) {
+                mobileMenuOverlay.addEventListener('click', toggleMenu);
             }
 
             function switchPage(pageId) {
@@ -295,6 +305,7 @@
                 });
                 if (window.innerWidth < 768) {
                     sidebar.classList.add('translate-x-full');
+                    mobileMenuOverlay.classList.add('hidden');
                 }
             }
 
@@ -379,12 +390,12 @@
                     e.preventDefault();
                     saveGeneralBtn.disabled = true;
                     saveGeneralBtn.textContent = 'جاري الحفظ...';
-                    let logoUrl = '';
                     
                     try {
                         const file = logoUploadInput.files[0];
+                        let logoUrl = null;
                         if (file) {
-                             const storageRef = ref(storage, `logos/${appId}/logo-${Date.now()}`);
+                             const storageRef = ref(storage, `logos/${appId}/logo`);
                              const snapshot = await uploadBytes(storageRef, file);
                              logoUrl = await getDownloadURL(snapshot.ref);
                         }
