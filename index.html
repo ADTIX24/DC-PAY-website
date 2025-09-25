@@ -575,11 +575,23 @@
                             </div>
                             <div class="mb-4">
                                 <label for="register-password" class="block text-gray-300 mb-2">كلمة المرور</label>
-                                <input type="password" id="register-password" class="w-full bg-[#0d1a2e] border border-[#2a3f6c] rounded-lg p-3 text-white focus:outline-none focus:border-sky-500" required>
+                                <div class="relative">
+                                    <input type="password" id="register-password" class="w-full bg-[#0d1a2e] border border-[#2a3f6c] rounded-lg p-3 pl-10 text-white focus:outline-none focus:border-sky-500" required>
+                                    <button type="button" class="password-toggle-btn absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white focus:outline-none" data-target="register-password">
+                                        <svg class="eye-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                        <svg class="eye-slash-icon w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7 .847 0 1.668.124 2.456.354M14 14l-4-4m-4 4l4-4m-4-4l12 12"></path></svg>
+                                    </button>
+                                </div>
                             </div>
                             <div class="mb-6">
                                 <label for="register-confirm-password" class="block text-gray-300 mb-2">تأكيد كلمة المرور</label>
-                                <input type="password" id="register-confirm-password" class="w-full bg-[#0d1a2e] border border-[#2a3f6c] rounded-lg p-3 text-white focus:outline-none focus:border-sky-500" required>
+                                <div class="relative">
+                                    <input type="password" id="register-confirm-password" class="w-full bg-[#0d1a2e] border border-[#2a3f6c] rounded-lg p-3 pl-10 text-white focus:outline-none focus:border-sky-500" required>
+                                    <button type="button" class="password-toggle-btn absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white focus:outline-none" data-target="register-confirm-password">
+                                        <svg class="eye-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                        <svg class="eye-slash-icon w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7 .847 0 1.668.124 2.456.354M14 14l-4-4m-4 4l4-4m-4-4l12 12"></path></svg>
+                                    </button>
+                                </div>
                             </div>
                             <button type="submit" class="w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-8 rounded-lg transition">إنشاء الحساب</button>
                         </form>
@@ -596,7 +608,13 @@
                             </div>
                             <div class="mb-6">
                                 <label for="login-password" class="block text-gray-300 mb-2">كلمة المرور</label>
-                                <input type="password" id="login-password" class="w-full bg-[#0d1a2e] border border-[#2a3f6c] rounded-lg p-3 text-white focus:outline-none focus:border-sky-500" required>
+                                <div class="relative">
+                                    <input type="password" id="login-password" class="w-full bg-[#0d1a2e] border border-[#2a3f6c] rounded-lg p-3 pl-10 text-white focus:outline-none focus:border-sky-500" required>
+                                     <button type="button" class="password-toggle-btn absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white focus:outline-none" data-target="login-password">
+                                        <svg class="eye-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                        <svg class="eye-slash-icon w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7 .847 0 1.668.124 2.456.354M14 14l-4-4m-4 4l4-4m-4-4l12 12"></path></svg>
+                                    </button>
+                                </div>
                             </div>
                             <button type="submit" class="w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-8 rounded-lg transition">تسجيل الدخول</button>
                         </form>
@@ -1157,6 +1175,21 @@
             handleGenericForm('register-form', 'تم التسجيل بنجاح!');
             handleGenericForm('login-form', 'تم تسجيل الدخول بنجاح!');
             handleGenericForm('contact-form', 'تم الإرسال بنجاح!');
+            
+            // --- Password Toggle Visibility ---
+            document.querySelectorAll('.password-toggle-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetInputId = button.dataset.target;
+                    const passwordInput = document.getElementById(targetInputId);
+                    if (!passwordInput) return;
+
+                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordInput.setAttribute('type', type);
+
+                    button.querySelector('.eye-icon').classList.toggle('hidden');
+                    button.querySelector('.eye-slash-icon').classList.toggle('hidden');
+                });
+            });
 
         });
     </script>
